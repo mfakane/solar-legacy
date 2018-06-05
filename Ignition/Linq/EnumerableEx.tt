@@ -1,0 +1,25 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".Generated.cs" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+using System;
+using System.Collections.Generic;
+
+namespace Ignition.Linq
+{
+	partial class EnumerableEx
+	{
+<# for (var i = 1; i <= 8; i++)
+{
+	var range = Enumerable.Range(1, i);
+	var types = string.Join(", ", range.Select(_ => string.Format("T{0}", _)));
+	var typeParams = string.Join(", ", range.Select(_ => string.Format("T{0} arg{0}", _)));
+	var invokeParams = string.Join(", ", range.Select(_ => string.Format("arg{0}", _)));
+#>	
+		public static void Run<<#=types #>>(this IEnumerable<Action<<#=types #>>> self, <#=typeParams #>)
+		{
+			self.Run(_ => _(<#=invokeParams #>));
+		}
+<# } #>
+	}
+}

@@ -1,0 +1,58 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".Generated.cs" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+using System;
+
+namespace Ignition
+{
+	partial class Extension
+	{
+<# for (var i = 1; i <= 8; i++)
+{
+	var range = Enumerable.Range(1, i);
+	var types = string.Join(", ", range.Select(_ => string.Format("T{0}", _)));
+	var actionParams = string.Join(", ", range.Select(_ => string.Format("Action<T{0}> d{0}", _)));
+	var funcParams = string.Join(", ", range.Select(_ => string.Format("Func<T{0}, TReturn> d{0}", _)));
+#>
+		public static void TypeMatch<<#=types #>>(this object value, <#=actionParams #>)
+		{
+<# { var c = 0; foreach (var j in range) { #>
+			<#=c++ > 0 ? "else " : "" #>if (value is T<#=j #>)
+				d<#=j #>((T<#=j #>)value);
+<# }} #>
+		}
+
+		public static void TypeMatch<<#=types #>>(this object value, <#=actionParams #>, Action<object> unmatch)
+		{
+<# { var c = 0; foreach (var j in range) { #>
+			<#=c++ > 0 ? "else " : "" #>if (value is T<#=j #>)
+				d<#=j #>((T<#=j #>)value);
+<# }} #>
+			else
+				unmatch(value);
+		}
+
+		public static TReturn TypeMatch<<#=types #>, TReturn>(this object value, <#=funcParams #>)
+		{
+<# { var c = 0; foreach (var j in range) { #>
+			<#=c++ > 0 ? "else " : "" #>if (value is T<#=j #>)
+				return d<#=j #>((T<#=j #>)value);
+<# }} #>
+			else
+				return default(TReturn);
+		}
+
+		public static TReturn TypeMatch<<#=types #>, TReturn>(this object value, <#=funcParams #>, Func<object, TReturn> unmatch)
+		{
+<# { var c = 0; foreach (var j in range) { #>
+			<#=c++ > 0 ? "else " : "" #>if (value is T<#=j #>)
+				return d<#=j #>((T<#=j #>)value);
+<# }} #>
+			else
+				return unmatch(value);
+		}
+
+<# } #>
+	}
+}

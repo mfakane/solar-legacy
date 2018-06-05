@@ -1,0 +1,245 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:local="clr-namespace:Ignition.Presentation"
+					xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Classic">
+	<ControlTemplate x:Key="ClassicTopLevelMenuItemTemplate"
+					 TargetType="{x:Type MenuItem}">
+		<Grid Name="grid">
+			<local:TextRenderer x:Name="text"
+								Margin="7,3,6,3"
+								Text="{TemplateBinding Header}" />
+			<Popup Placement="Bottom"
+				   Grid.IsSharedSizeScope="True"
+				   IsOpen="{TemplateBinding IsSubmenuOpen}"
+				   Focusable="False"
+				   PopupAnimation="{DynamicResource {x:Static SystemParameters.MenuPopupAnimationKey}}"
+				   AllowsTransparency="True">
+				<Microsoft_Windows_Themes:SystemDropShadowChrome Margin="0,0,8,8">
+					<Grid Background="{DynamicResource {x:Static SystemColors.MenuBrushKey}}">
+						<Microsoft_Windows_Themes:ClassicBorderDecorator Name="cbd"
+																		 Background="{TemplateBinding Background}"
+																		 BorderStyle="AltRaised"
+																		 BorderThickness="2">
+							<StackPanel Margin="1"
+										IsItemsHost="True"
+										KeyboardNavigation.DirectionalNavigation="Cycle" />
+						</Microsoft_Windows_Themes:ClassicBorderDecorator>
+					</Grid>
+				</Microsoft_Windows_Themes:SystemDropShadowChrome>
+			</Popup>
+		</Grid>
+		<ControlTemplate.Triggers>
+			<Trigger Property="IsMouseOver"
+					 Value="True">
+				<Setter TargetName="grid"
+						Property="Background"
+						Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
+				<Setter Property="Foreground"
+						Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}" />
+				<Setter TargetName="text"
+						Property="Foreground"
+						Value="{DynamicResource {x:Static SystemColors.HighlightTextColorKey}}" />
+			</Trigger>
+			<Trigger Property="IsHighlighted"
+					 Value="True">
+				<Setter TargetName="grid"
+						Property="Background"
+						Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
+				<Setter Property="Foreground"
+						Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}" />
+				<Setter TargetName="text"
+						Property="Foreground"
+						Value="{DynamicResource {x:Static SystemColors.HighlightTextColorKey}}" />
+			</Trigger>
+			<Trigger Property="IsEnabled"
+					 Value="False">
+				<Setter Property="Foreground"
+						Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+				<Setter TargetName="text"
+						Property="Foreground"
+						Value="{DynamicResource {x:Static SystemColors.GrayTextColorKey}}" />
+			</Trigger>
+		</ControlTemplate.Triggers>
+	</ControlTemplate>
+	<ControlTemplate x:Key="ClassicDropDownMenuItemTemplate"
+					 TargetType="{x:Type MenuItem}">
+		<Grid Name="grid"
+			  MinWidth="100"
+			  RenderOptions.ClearTypeHint="Enabled">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="16" />
+				<ColumnDefinition />
+				<ColumnDefinition Width="37" />
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="17" />
+			</Grid.ColumnDefinitions>
+			<Grid HorizontalAlignment="Left">
+				<local:NativeGlyph x:Name="ngCheck"
+								   Glyph="Check"
+								   Visibility="Collapsed"
+								   Width="16"
+								   Height="14" />
+				<ContentPresenter ContentSource="Icon" />
+			</Grid>
+			<local:TextRenderer x:Name="text"
+								Grid.Column="1"
+								Margin="0,1,4,3"
+								Text="{TemplateBinding Header}" />
+			<TextBlock Grid.Column="3"
+					   Margin="0,1,0,0"
+					   TextAlignment="Right"
+					   Text="{TemplateBinding InputGestureText}" />
+			<local:NativeGlyph x:Name="ngArrow"
+							   Glyph="Arrow"
+							   Width="12"
+							   HorizontalAlignment="Right"
+							   Grid.Column="4"
+							   Margin="0,0,-2,0"
+							   Visibility="Collapsed" />
+			<Popup HorizontalOffset="-3"
+				   VerticalOffset="-3"
+				   Placement="Right"
+				   Grid.IsSharedSizeScope="True"
+				   IsOpen="{TemplateBinding IsSubmenuOpen}"
+				   Focusable="False"
+				   PopupAnimation="{DynamicResource {x:Static SystemParameters.MenuPopupAnimationKey}}"
+				   AllowsTransparency="True">
+				<Microsoft_Windows_Themes:SystemDropShadowChrome Margin="0,0,8,8">
+					<Grid Background="{DynamicResource {x:Static SystemColors.MenuBrushKey}}">
+						<Microsoft_Windows_Themes:ClassicBorderDecorator Name="cbd"
+																		 Background="{TemplateBinding Background}"
+																		 BorderStyle="AltRaised"
+																		 BorderThickness="2">
+							<StackPanel Margin="1"
+										IsItemsHost="True"
+										KeyboardNavigation.DirectionalNavigation="Cycle" />
+						</Microsoft_Windows_Themes:ClassicBorderDecorator>
+					</Grid>
+				</Microsoft_Windows_Themes:SystemDropShadowChrome>
+			</Popup>
+		</Grid>
+		<ControlTemplate.Triggers>
+			<Trigger Property="HasItems"
+					 Value="True">
+				<Setter TargetName="ngArrow"
+						Property="Visibility"
+						Value="Visible" />
+			</Trigger>
+			<Trigger Property="local:VisualStyleOptions.IsRadioCheckMenuItem"
+					 Value="True">
+				<Setter TargetName="ngCheck"
+						Property="Glyph"
+						Value="Bullet" />
+			</Trigger>
+			<MultiTrigger>
+				<MultiTrigger.Conditions>
+					<Condition Property="IsChecked"
+							   Value="True" />
+					<Condition Property="Icon"
+							   Value="{x:Null}" />
+				</MultiTrigger.Conditions>
+				<Setter TargetName="ngCheck"
+						Property="Visibility"
+						Value="Visible" />
+			</MultiTrigger>
+			<Trigger Property="IsHighlighted"
+					 Value="False">
+				<Setter Property="Foreground"
+						Value="{DynamicResource {x:Static SystemColors.MenuTextBrushKey}}" />
+			</Trigger>
+			<Trigger Property="IsHighlighted"
+					 Value="True">
+				<Setter TargetName="grid"
+						Property="Background"
+						Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
+				<Setter Property="Foreground"
+						Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}" />
+				<Setter TargetName="ngCheck"
+						Property="Foreground"
+						Value="{DynamicResource {x:Static SystemColors.HighlightTextColorKey}}" />
+				<Setter TargetName="ngArrow"
+						Property="Foreground"
+						Value="{DynamicResource {x:Static SystemColors.HighlightTextColorKey}}" />
+				<Setter TargetName="text"
+						Property="Foreground"
+						Value="{DynamicResource {x:Static SystemColors.HighlightTextColorKey}}" />
+			</Trigger>
+			<Trigger Property="IsEnabled"
+					 Value="False">
+				<Setter Property="Foreground"
+						Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+				<Setter TargetName="ngCheck"
+						Property="Foreground"
+						Value="{DynamicResource {x:Static SystemColors.GrayTextColorKey}}" />
+				<Setter TargetName="ngArrow"
+						Property="Foreground"
+						Value="{DynamicResource {x:Static SystemColors.GrayTextColorKey}}" />
+				<Setter TargetName="text"
+						Property="Foreground"
+						Value="{DynamicResource {x:Static SystemColors.GrayTextColorKey}}" />
+			</Trigger>
+		</ControlTemplate.Triggers>
+	</ControlTemplate>
+	<ControlTemplate x:Key="ClassicContextMenuTemplate"
+					 TargetType="{x:Type ContextMenu}">
+		<Microsoft_Windows_Themes:SystemDropShadowChrome Margin="0,0,8,8">
+			<Grid Background="{DynamicResource {x:Static SystemColors.MenuBrushKey}}">
+				<Microsoft_Windows_Themes:ClassicBorderDecorator Name="cbd"
+																 Background="{TemplateBinding Background}"
+																 BorderStyle="AltRaised"
+																 BorderThickness="2">
+					<StackPanel Margin="1"
+								IsItemsHost="True"
+								KeyboardNavigation.DirectionalNavigation="Cycle" />
+				</Microsoft_Windows_Themes:ClassicBorderDecorator>
+			</Grid>
+		</Microsoft_Windows_Themes:SystemDropShadowChrome>
+	</ControlTemplate>
+	<ControlTemplate x:Key="ClassicButtonTemplate"
+					 TargetType="{x:Type ButtonBase}">
+		<Microsoft_Windows_Themes:ClassicBorderDecorator Name="cbd"
+														 Background="{TemplateBinding Background}"
+														 BorderStyle="Raised"
+														 BorderThickness="3"
+														 Margin="-1">
+			<ContentPresenter Margin="{TemplateBinding Padding}"
+							  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+							  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+							  RecognizesAccessKey="True" />
+		</Microsoft_Windows_Themes:ClassicBorderDecorator>
+		<ControlTemplate.Triggers>
+			<Trigger Property="IsKeyboardFocused"
+					 Value="True">
+				<Setter TargetName="cbd"
+						Property="BorderStyle"
+						Value="RaisedFocused" />
+			</Trigger>
+			<Trigger Property="Button.IsDefaulted"
+					 Value="True">
+				<Setter TargetName="cbd"
+						Property="BorderStyle"
+						Value="RaisedFocused" />
+			</Trigger>
+			<Trigger Property="ToggleButton.IsChecked"
+					 Value="True">
+				<Setter TargetName="cbd"
+						Property="BorderStyle"
+						Value="RaisedPressed" />
+			</Trigger>
+			<Trigger Property="IsPressed"
+					 Value="True">
+				<Setter TargetName="cbd"
+						Property="BorderStyle"
+						Value="RaisedPressed" />
+			</Trigger>
+			<Trigger Property="IsEnabled"
+					 Value="False">
+				<Setter TargetName="cbd"
+						Property="BorderStyle"
+						Value="Raised" />
+				<Setter Property="Foreground"
+						Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+			</Trigger>
+		</ControlTemplate.Triggers>
+	</ControlTemplate>
+</ResourceDictionary>
